@@ -1,3 +1,4 @@
+import '../../types/express'
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -5,6 +6,9 @@ import authRoutes from './modules/auth/auth.routes' // 🟩 DOĞRU ROUTER İMPOR
 import needRoutes from './modules/needs/need.routes'
 import newsRoutes from './modules/news/news.routes'
 import boycottRoutes from './modules/boycotts/boycott.routes'
+
+
+
 
 
 dotenv.config()
