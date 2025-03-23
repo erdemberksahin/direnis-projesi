@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password_hash String
+  role          String
+  created_at    DateTime @default(now())
+
+  // İlişkiler
+  needs     Need[]
+  news      News[]
+  boycotts  Boycott[]
+}
+
+model Need {
+  id          String   @id @default(uuid())
+  description String
+  category    String
+  urgency     String
+  status      String   @default("open")
+  lat         Float
+  lng         Float
+  created_at  DateTime @default(now())
+
+  created_by   User   @relation(fields: [created_by_id], references: [id])
+  created_by_id String
+}
+
+model News {
+  id          String   @id @default(uuid())
+  tag         String
+  content     String
+  lat         Float
+  lng         Float
+  is_verified Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  created_by   User   @relation(fields: [created_by_id], references: [id])
+  created_by_id String
+}
+
+model Boycott {
+  id          String   @id @default(uuid())
+  name        String
+  reason      String
+  category    String
+  logo_url    String?
+  created_at  DateTime @default(now())
+
+  created_by   User   @relation(fields: [created_by_id], references: [id])
+  created_by_id String
+}
