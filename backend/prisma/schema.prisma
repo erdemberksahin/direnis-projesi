@@ -35,16 +35,17 @@ model Need {
 }
 
 model News {
-  id          String   @id @default(uuid())
-  tag         String
-  content     String
-  lat         Float
-  lng         Float
-  is_verified Boolean  @default(false)
-  created_at  DateTime @default(now())
+  id            String   @id @default(uuid())
+  title         String   @default("Untitled") // 👈 zorunlu + varsayılan
+  tag           String
+  content       String
+  lat           Float
+  lng           Float
+  is_verified   Boolean  @default(false)
+  created_at    DateTime @default(now())
 
-  created_by   User   @relation(fields: [created_by_id], references: [id])
-  created_by_id String
+  created_by     User   @relation(fields: [created_by_id], references: [id])
+  created_by_id  String
 }
 
 model Boycott {

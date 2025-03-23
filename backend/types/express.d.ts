@@ -1,6 +1,4 @@
-// types/express.d.ts
-import express from 'express'
-import { User } from '../src/entities/user.entity' // gerekirse any yap
+import { User } from '../src/entities/user.entity' // ya da geçici olarak any
 
 declare global {
   namespace Express {
@@ -10,5 +8,5 @@ declare global {
   }
 }
 
-// Bu satır kritik! Dosyayı global modül olarak bırakıyoruz.
+// BU SATIR ZORUNLU!
 export {}

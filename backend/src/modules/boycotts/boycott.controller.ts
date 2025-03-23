@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
 import prisma from '../../prisma/client'
 
+// req.user hatası için geçici interface
+interface AuthRequest extends Request {
+  user?: any
+}
+
 export const createBoycott = async (req: Request, res: Response): Promise<void> => {
   const { name, reason, category, logo_url } = req.body
-  const user = req.user
+  const user = (req as AuthRequest).user
 
   if (!user || user.role !== 'admin') {
     res.status(403).json({ message: 'Yalnızca admin kullanıcılar boykot ekleyebilir' })

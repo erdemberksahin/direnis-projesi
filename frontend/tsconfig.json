@@ -10,7 +10,11 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "lib": ["esnext", "dom"],
-    "types": ["vite/client", "webpack-env", "vue"]  // Burada vue'yu belirtiyoruz
+    "types": ["vite/client", "webpack-env", "vue"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },   
   },
   "include": [
     "src/**/*.ts",
