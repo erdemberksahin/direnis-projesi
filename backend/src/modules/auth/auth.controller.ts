@@ -30,8 +30,9 @@ export const register = async (req: Request, res: Response) => {
       }
     })
 
+    // ✅ JWT'ye role bilgisi eklendi
     const token = jwt.sign(
-      { id: newUser.id },
+      { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET!,
       { expiresIn: '7d' }
     )
@@ -63,8 +64,9 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Geçersiz giriş bilgileri' })
     }
 
+    // ✅ JWT'ye role bilgisi eklendi
     const token = jwt.sign(
-      { id: user.id },
+      { id: user.id, role: user.role },
       process.env.JWT_SECRET!,
       { expiresIn: '7d' }
     )

@@ -1,36 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
-// Sayfalarınızı import edin
-import HomePage from '@/views/HomePage.vue';
-import NewsPage from '@/views/NewsPage.vue';
-import AboutPage from '@/views/AboutPage.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomePage,
-  },
-  {
-    path: '/news',
-    name: 'News',
-    component: NewsPage,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: AboutPage,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/LoginPage.vue')
-  },
-];
+  { path: '/', component: () => import('@/pages/Login.vue') },
+  { path: '/dashboard', component: () => import('@/pages/Login.vue'), meta: { requiresAuth: true } }
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+router.beforeEach((to, from, next) => {
+  const store = useAuthStore()
+  if (to.meta.requiresAuth && !store.token) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+export default router

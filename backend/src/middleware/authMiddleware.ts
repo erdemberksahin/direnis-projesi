@@ -1,14 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Genişletilmiş Request Tipi
 interface DecodedToken {
   id: string;
   role: string;
 }
 
 interface CustomRequest extends Request {
-  user?: {   // req.user'ı burada tanımlıyoruz
+  user?: {
     id: string;
     role: string;
   };
@@ -18,6 +17,7 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.warn('❌ Authorization header eksik veya yanlış formatta');
     res.status(401).json({ message: 'Token bulunamadı' });
     return;
   }
@@ -25,10 +25,14 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
   const token = authHeader.split(' ')[1];
 
   try {
+    console.log('🔐 JWT_SECRET:', process.env.JWT_SECRET); // 💬 ENV kontrolü
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-    req.user = { id: decoded.id, role: decoded.role };  // req.user'ı burada ekliyoruz
+    console.log('✅ Token decode edildi:', decoded); // 💬 Token içeriği
+
+    req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (error) {
+    console.error('🔥 JWT doğrulama hatası:', error); // 💬 Hata logu
     res.status(401).json({ message: 'Geçersiz token' });
   }
 };
